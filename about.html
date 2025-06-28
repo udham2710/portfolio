@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>About | Hecker</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <style>
+    body, html {
+      margin: 0; padding: 0; min-height: 100vh; width: 100vw;
+      background: #0a0f14;
+      color: #39ff14;
+      font-family: 'Press Start 2P', 'Courier New', Courier, monospace;
+      overflow-x: hidden;
+    }
+    #matrix {
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 0; pointer-events: none;
+    }
+    .main-content {
+      position: relative; z-index: 2; min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+      padding: 2vw 0 4vw 0;
+      width: 100vw;
+      box-sizing: border-box;
+    }
+    .terminal-box {
+      background: rgba(10, 15, 20, 0.98);
+      border: 2px solid #39ff14;
+      border-radius: 12px;
+      box-shadow: 0 0 24px #39ff14, 0 0 64px #000a;
+      padding: 2.5rem 2vw 2.5rem 2vw;
+      width: 90vw;
+      margin: 2rem 0 1.5rem 0;
+      font-size: 1.05rem;
+      color: #39ff14;
+      font-family: 'Press Start 2P', 'Courier New', Courier, monospace;
+      position: relative;
+      overflow: hidden;
+      box-sizing: border-box;
+      min-height: unset;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      margin-left: 5vw;
+      margin-right: 5vw;
+      max-width: unset;
+    }
+    .blinking-cursor {
+      display: inline-block;
+      width: 1ch;
+      color: #39ff14;
+      background: none;
+      animation: blink 1s steps(1) infinite;
+      font-weight: bold;
+    }
+    @keyframes blink {
+      0%, 49% { opacity: 1; }
+      50%, 100% { opacity: 0; }
+    }
+    .section-title {
+      color: #00eaff;
+      font-size: 1.1rem;
+      margin: 0 0 1.2rem 0;
+      text-shadow: 0 0 8px #00eaff, 0 0 16px #fff2;
+      letter-spacing: 1px;
+      border-left: 4px solid #39ff14;
+      padding-left: 0.7em;
+      font-family: inherit;
+      display: block;
+    }
+    .skills-list, .exploits-list {
+      margin: 1.5rem 0 1.5rem 0.5rem;
+      padding: 0;
+      list-style: none;
+    }
+    .skills-list li, .exploits-list li {
+      color: #00eaff;
+      text-shadow: 0 0 8px #00eaff, 0 0 16px #fff2;
+      margin-bottom: 0.7rem;
+      font-size: 1rem;
+      position: relative;
+      padding-left: 1.5em;
+      word-break: break-word;
+    }
+    .skills-list li::before, .exploits-list li::before {
+      content: '●';
+      color: #39ff14;
+      position: absolute;
+      left: 0;
+      text-shadow: 0 0 8px #39ff14;
+      font-size: 1.1em;
+      animation: blink 2s infinite alternate;
+    }
+    .badge-container {
+      margin: 2rem 0 1rem 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 90vw;
+      margin-left: 5vw;
+      margin-right: 5vw;
+      max-width: unset;
+      background: rgba(10, 15, 20, 0.98);
+      border: 2px solid #39ff14;
+      border-radius: 12px;
+      box-shadow: 0 0 24px #39ff14, 0 0 64px #000a;
+      padding: 0;
+      height: 160px;
+      min-height: unset;
+    }
+    .badge-container iframe {
+      width: 420px;
+      height: 120px;
+      min-width: 0;
+      min-height: 0;
+      border: none;
+      background: #111;
+      box-shadow: none;
+      border-radius: 8px;
+      overflow: hidden;
+      display: block;
+      margin: 0;
+      padding: 0;
+    }
+    .footer {
+      width: 100%;
+      text-align: center;
+      color: #00eaff;
+      font-size: 0.9rem;
+      padding: 1.2rem 0 0.7rem 0;
+      text-shadow: 0 0 8px #00eaff, 0 0 16px #fff2;
+      letter-spacing: 1px;
+      margin-top: auto;
+      z-index: 3;
+      background: linear-gradient(90deg, #0a0f14 80%, #0a0f14cc 100%);
+    }
+    @media (max-width: 900px) {
+      .main-content, .terminal-box, .badge-container { max-width: 100vw; }
+      .terminal-box, .badge-container { padding-left: 2vw; padding-right: 2vw; }
+      .terminal-box, .badge-container { width: 90vw; margin-left: 5vw; margin-right: 5vw; }
+    }
+    @media (max-width: 600px) {
+      .terminal-box { padding: 1.2rem 2vw 1.2rem 2vw; font-size: 0.8rem; }
+      .section-title { font-size: 1rem; }
+      .skills-list li, .exploits-list li { font-size: 0.9rem; }
+      .badge-container { height: 110px; }
+      .badge-container iframe { width: 98vw; height: 90px; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="matrix"></canvas>
+  <div class="main-content">
+    <div class="terminal-box" id="aboutBox">
+      <span class="section-title">ABOUT</span>
+      <div id="aboutContent"></div>
+      <span class="blinking-cursor">█</span>
+    </div>
+    <div class="terminal-box" id="skillsBox">
+      <span class="section-title">SKILLS</span>
+      <ul class="skills-list">
+        <li>Web Exploitation (XSS, SQLi, CSRF)</li>
+        <li>Recon & Enumeration</li>
+        <li>CTFs (TryHackMe, Hack The Box)</li>
+        <li>Languages: Python, SQL, HTML</li>
+        <li>Networking</li>
+        <li>Social Engineering</li>
+      </ul>
+    </div>
+    <div class="badge-container">
+      <iframe src="https://tryhackme.com/api/v2/badges/public-profile?userPublicId=4751938" allowtransparency="true" scrolling="no"></iframe>
+    </div>
+  </div>
+  <div class="footer">Powered by Udham aka Hecker | CyberOps in Progress...</div>
+  <script>
+    // Matrix Rain
+    const canvas = document.getElementById('matrix');
+    const ctx = canvas.getContext('2d');
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+    canvas.width = width;
+    canvas.height = height;
+    let fontSize = 18;
+    let columns = Math.floor(width / fontSize);
+    let drops = Array(columns).fill(1);
+    function drawMatrix() {
+      ctx.fillStyle = 'rgba(0,0,0,0.15)';
+      ctx.fillRect(0, 0, width, height);
+      ctx.font = fontSize + "px 'Press Start 2P', monospace";
+      ctx.fillStyle = '#39ff14';
+      for (let i = 0; i < drops.length; i++) {
+        let text = String.fromCharCode(0x30A0 + Math.random() * 96);
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+        if (drops[i] * fontSize > height && Math.random() > 0.975) drops[i] = 0;
+        drops[i]++;
+      }
+    }
+    setInterval(drawMatrix, 40);
+    window.addEventListener('resize', () => {
+      width = window.innerWidth; height = window.innerHeight;
+      canvas.width = width; canvas.height = height;
+      columns = Math.floor(width / fontSize);
+      drops = Array(columns).fill(1);
+    });
+	const aboutContent = document.getElementById('aboutContent');
+const aboutLines = [
+  "💻 <b>About Me</b><br>",
+  "Hey there!<br>I'm Heacker, an 11-year-old cybersecurity enthusiast from India who's all about hacking the right way — ethically, legally, and smartly 🧠💥<br><br>",
+  "I don't just dream about hacking, I live it daily. From learning on platforms like TryHackMe to participating in private bug bounty programs on YesWeHack, I'm deep into offensive security even at this young age.<br><br>",
+  "👨‍🔧 <b>Where I Work:</b><br>I currently work with the Cyber Mind Space team — a student-focused cybersecurity community where I help others learn about ethical hacking, tools, and real-world attack techniques.<br><br>",
+  "❗ <b>Note:</b> I'm a contributor, not the owner of Cyber Mind Space.<br><br>",
+  "⚔️ <b>What I Do:</b><br>- Break stuff (legally 😎) to learn how to fix it<br>- Hunt for vulnerabilities through bug bounty platforms<br>- Explore labs on TryHackMe and Hack The Box (soon!)<br>- Share knowledge via GitHub, Discord & YouTube<br><br>",
+  "🔧 <b>Tools & Skills:</b><br>Recon Tools: Subfinder, Naabu, HTTPX, Nuclei, Waybackurls, GF, URO<br>Vulns: XSS, CSRF, SQLi, Business Logic Flaws, MFA Bypass, Open Redirect<br>Languages: Python, HTML, SQL, C++<br>Concepts: Networking, OSINT, Web Pentesting<br>Reading: Zseano's Methodology, OWASP API Security, WSTG, Web Hacking 101<br><br>",
+  "🎯 <b>Goals:</b><br>- Become one of the youngest elite bug bounty hunters<br>- Help others in my age group understand hacking the right way<br>- Keep learning, keep hunting, and keep improving every damn day 🚀<br>"
+];
+
+function typeAllLines(lines, idx) {
+  if (idx >= lines.length) return;
+  let line = lines[idx];
+  let j = 0;
+  function typeChar() {
+    // Only keep already-typed lines + current line in progress
+    let alreadyTyped = lines.slice(0, idx).join('<br>');
+    aboutContent.innerHTML = alreadyTyped + line.slice(0, j) + '<span class="blinking-cursor">█</span>';
+    if (j < line.length) {
+      j++;
+      setTimeout(typeChar, 10 + Math.random()*12);
+    } else {
+      aboutContent.innerHTML = alreadyTyped + line + '<br>';
+      setTimeout(() => typeAllLines(lines, idx+1), 200);
+    }
+  }
+  typeChar();
+}
+typeAllLines(aboutLines, 0);
+  </script> 
+</body>
+</html>

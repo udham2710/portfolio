@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ROOT AND RECON HACK</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <style>
+    body, html {
+      margin: 0; padding: 0; height: 100%; width: 100vw;
+      background: #000;
+      overflow: hidden;
+      font-family: 'Press Start 2P', 'Courier New', Courier, monospace;
+    }
+    #matrix {
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 0; pointer-events: none;
+    }
+    .center-content {
+      position: relative; z-index: 2; min-height: 100vh;
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+    }
+    .pixel-title {
+      color: #ff073a;
+      font-size: 3vw;
+      text-align: center;
+      letter-spacing: 0.1em;
+      text-shadow: 0 0 8px #ff073a, 0 0 32px #fff2;
+      margin-bottom: 1.5rem;
+      font-family: 'Press Start 2P', 'Courier New', Courier, monospace;
+    }
+    .subtitle {
+      color: #00fff7;
+      font-size: 1.1vw;
+      margin-bottom: 2.5rem;
+      text-shadow: 0 0 8px #00fff7, 0 0 32px #fff2;
+      font-family: 'Press Start 2P', 'Courier New', Courier, monospace;
+    }
+    .neon-btn {
+      font-family: 'Press Start 2P', 'Courier New', Courier, monospace;
+      font-size: 1.2rem;
+      color: #39ff14;
+      background: transparent;
+      border: 3px solid #39ff14;
+      border-radius: 12px;
+      padding: 1.2rem 2.5rem;
+      box-shadow: 0 0 16px #39ff14, 0 0 32px #fff2;
+      cursor: pointer;
+      margin-top: 1.5rem;
+      text-shadow: 0 0 8px #39ff14;
+      transition: 0.2s;
+    }
+    .neon-btn:hover {
+      background: #39ff1422;
+      box-shadow: 0 0 32px #39ff14, 0 0 64px #fff2;
+      color: #fff;
+    }
+    @media (max-width: 600px) {
+      .pixel-title { font-size: 1.5rem; }
+      .subtitle { font-size: 0.8rem; }
+      .neon-btn { font-size: 1rem; padding: 0.8rem 1.2rem; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="matrix"></canvas>
+  <div class="center-content">
+    <div class="pixel-title">ROOT AND<br>RECON HACK</div>
+    <div class="subtitle">&gt;&gt;&gt; UDHAM PRESENTS &lt;&lt;&lt;</div>
+    <button class="neon-btn" onclick="window.location.href='about.html'">ENTER THE SYSTEM</button>
+  </div>
+  <script>
+    // Matrix Rain
+    const canvas = document.getElementById('matrix');
+    const ctx = canvas.getContext('2d');
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+    canvas.width = width;
+    canvas.height = height;
+    let fontSize = 18;
+    let columns = Math.floor(width / fontSize);
+    let drops = Array(columns).fill(1);
+    function drawMatrix() {
+      ctx.fillStyle = 'rgba(0,0,0,0.15)';
+      ctx.fillRect(0, 0, width, height);
+      ctx.font = fontSize + "px 'Press Start 2P', monospace";
+      ctx.fillStyle = '#39ff14';
+      for (let i = 0; i < drops.length; i++) {
+        let text = String.fromCharCode(0x30A0 + Math.random() * 96);
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+        if (drops[i] * fontSize > height && Math.random() > 0.975) drops[i] = 0;
+        drops[i]++;
+      }
+    }
+    setInterval(drawMatrix, 40);
+    window.addEventListener('resize', () => {
+      width = window.innerWidth; height = window.innerHeight;
+      canvas.width = width; canvas.height = height;
+      columns = Math.floor(width / fontSize);
+      drops = Array(columns).fill(1);
+    });
+  </script>
+</body>
+</html>
